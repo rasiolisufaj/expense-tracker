@@ -54,7 +54,7 @@ System implementation:  (System implementation)[Best if the solution is the fast
             if(transactions[transactions.length-1] != undefinded) -> newTransation = transactions[transactions.length-1].id + 1;
             else newTransationId = 0
 
-        create transactiono object, const newTransation = {id: newTransationId, title: userTitle, amount: userAmount};
+        create transaction object, const newTransation = {id: newTransationId, title: userTitle, amount: userAmount};
         add this newTransation to transactions array
         update the LocalStorage
 
