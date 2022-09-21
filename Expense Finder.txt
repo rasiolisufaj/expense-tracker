@@ -2,12 +2,11 @@ System Features: (System Analise)[Best if the solution fits clients needs]
     1. Show Balance
     2. Show Income
     3. Show Expense
-    4. Show Transaction(Id + Title + amount) History
+    4. Show Transaction History (Id + Title + amount) 
     5. Add new Transaction(Id + Title + amount)
 
 System Design:  (System Design)[Best if the solution stores less data]
     1. Save all the transactions
-    
     2. To require Balance -> sum all the transactions.amount
     3. To require Income -> sum all the postive transactions.amount
     4. To require Expense -> sum all the negative transactions.amount
@@ -51,7 +50,7 @@ System implementation:  (System implementation)[Best if the solution is the fast
         get user input
         get id of the last transaction 
             let newTransation;
-            if(transactions[transactions.length-1] != undefinded) -> newTransation = transactions[transactions.length-1].id + 1;
+            if(transactions[transactions.length-1] != undefined) -> newTransation = transactions[transactions.length-1].id + 1;
             else newTransationId = 0
 
         create transaction object, const newTransation = {id: newTransationId, title: userTitle, amount: userAmount};

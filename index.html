@@ -19,19 +19,16 @@
           <p id="money-income" class="money income">$0.00</p>
         </div>
         <div>
-          <h4>INCOME</h4>
+          <h4>EXPENSE</h4>
           <p id="money-expense" class="money expense">$0.00</p>
         </div>
       </div>
 
       <h3>History</h3>
       <ul id="list" class="list">
-        <li class="income">
+        <!-- <li class="income">
           Phone <span>300</span><button class="delete-btn">X</button>
-        </li>
-        <li class="expense">
-          Phone <span>-300</span><button class="delete-btn">X</button>
-        </li>
+        </li> -->
       </ul>
 
       <h3>Add new transaction</h3>
@@ -44,11 +41,11 @@
           <label for="amount"
             >Amount <br />(negative - expense, positive - income)</label
           >
-          <input type="number" id="number" placeholder="Enter amount..." />
+          <input type="number" id="amount" placeholder="Enter amount..." />
         </div>
       </form>
 
-      <button class="btn">Add transaction</button>
+      <button class="btn" id="button">Add transaction</button>
     </div>
     <script src="script.js"></script>
   </body>
