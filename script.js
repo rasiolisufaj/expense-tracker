@@ -8,39 +8,73 @@ const buttonEl = document.getElementById("button");
 
 let transactions = [];
 
+// Initialise transactions from Local Storage
+function initialiseTransactions() {
+  let oldTransactions = JSON.parse(localStorage.getItem("transactions"));
+  if (oldTransactions !== null) {
+    transactions = oldTransactions;
+  }
+}
+
+initialiseTransactions();
+updateUI();
+
 // Get transaction as object
-function getTransactionObject(index, text, total) {
+function insertNewTransactionObject(index, text, total) {
   text = inputTextEl.value;
-  total = inputAmountEl.value;
-  index = transactions.length;
+  total = +inputAmountEl.value;
+  // index = transactions.length;
+  let newTransactionId;
+  if (transactions.length === 0) {
+    newTransactionId = 0;
+  } else {
+    newTransactionId = transactions[transactions.length - 1].id + 1;
+  }
   const transaction = {
-    id: index,
+    id: newTransactionId,
     title: text,
     amount: total,
   };
   transactions.push(transaction);
-  console.log(transactions);
+
+  localStorage.setItem("transactions", JSON.stringify(transactions));
+  // console.log(transactions);
+}
+
+// Delete Element Function
+function deleteElement(e) {
+  const deleteBtnElement = e.target;
+  const transactionElement = deleteBtnElement.parentElement;
+  const idElement =
+    transactionElement.children[transactionElement.children.length - 1];
+  const id = idElement.value;
+  transactions = transactions.filter((transaction) => transaction.id != id);
+  localStorage.setItem("transactions", JSON.stringify(transactions));
+  updateUI();
 }
 
 // Create list element
-function createListElement() {
+function addTransactionElement(transaction) {
   const li = document.createElement("li");
   const span = document.createElement("span");
   const button = document.createElement("button");
-  if (inputAmountEl.value > 0 && inputTextEl.value !== null) {
+  const input = document.createElement("input");
+  input.type = "hidden";
+  input.value = transaction.id;
+  if (transaction.amount > 0) {
     li.classList.add("income");
-    span.innerText = `+${inputAmountEl.value}`;
-  } else if (inputAmountEl.value < 0 && inputTextEl.value !== null) {
-    li.classList.add("expense");
-    span.innerText = inputAmountEl.value;
+    span.innerText = `+${transaction.amount}`;
   } else {
-    return alert("Please add a text and amount");
+    li.classList.add("expense");
+    span.innerText = transaction.amount;
   }
-  li.innerText = inputTextEl.value;
+  li.innerText = transaction.title;
   button.classList.add("delete-btn");
+  button.addEventListener("click", deleteElement);
   button.innerText = "X";
   li.appendChild(span);
   li.appendChild(button);
+  li.appendChild(input);
   historyListEl.appendChild(li);
 }
 
@@ -48,7 +82,7 @@ function createListElement() {
 function showBalance() {
   let balance = 0;
   transactions.forEach((item) => {
-    balance += parseInt(item.amount);
+    balance += item.amount;
   });
   balanceEl.innerText = `$${balance}.00`;
 }
@@ -58,7 +92,7 @@ function showIncome() {
   let income = 0;
   transactions.forEach((item) => {
     if (item.amount > 0) {
-      income += parseInt(item.amount);
+      income += item.amount;
     }
   });
   moneyIncomeEl.innerText = `$${income}.00`;
@@ -69,16 +103,29 @@ function showExpense() {
   let expense = 0;
   transactions.forEach((item) => {
     if (item.amount < 0) {
-      expense += parseInt(item.amount);
+      expense += item.amount;
     }
   });
   moneyExpenseEl.innerText = `$${expense}.00`;
 }
 
+// Show All Transactions
+function showAllTransactions() {
+  historyListEl.innerHTML = ``;
+  transactions.forEach((transaction) => {
+    addTransactionElement(transaction);
+  });
+}
+
+// Delete Button
+function deleteBtn() {
+  const arr = historyListEl.children;
+  console.log(arr);
+}
+
 // Update UI
 function updateUI() {
-  createListElement();
-  getTransactionObject();
+  showAllTransactions();
   showBalance();
   showIncome();
   showExpense();
@@ -86,6 +133,7 @@ function updateUI() {
 
 // Add transaction button
 buttonEl.addEventListener("click", () => {
+  insertNewTransactionObject();
   updateUI();
   inputAmountEl.value = "";
   inputTextEl.value = "";
